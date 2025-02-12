@@ -15,7 +15,6 @@ let selectedPicture = "";
 for(let i = 0; i < profileImages.length; i++){
     profileImages[i].onclick = function() {
         selectedPicture = profileImages[i].src
-        console.log(selectedPicture)
     }};
 
 
@@ -49,25 +48,82 @@ const enemyAttack = document.getElementById("enemy-attack");
 const enemyImage = document.getElementById("enemy-img");
 
 
-const EnemyNames = ["Goblin", "Ork", "Drage"];
+const enemyNames = ["Goblin", "Ork", "Drage"];
 const enemyImages = ["dragon.jpg", "monster.jpg", "swamp-monster.jpg"];
-console.log(enemyImages)
+
 
 const randomNumberHp = Math.floor((Math.random() * 150) + 50);
-const randomNumberenemyAttack = Math.floor((Math.random() * 40) + 10);
+const randomNumberEnemyAttack = Math.floor((Math.random() * 40) + 10);
 
 function showRandomEnemy(){
-enemyName.innerHTML = `Enemy: ${EnemyNames[Math.floor(Math.random() * EnemyNames.length)]}`;
+enemyName.innerHTML = `Enemy: ${enemyNames[Math.floor(Math.random() * enemyNames.length)]}`;
 enemyHp.innerHTML = `HP: ${randomNumberHp}`;
-enemyAttack.innerHTML = `Enemy attack: ${randomNumberenemyAttack}`;
+enemyAttack.innerHTML = `Enemy attack: ${randomNumberEnemyAttack}`;
+enemyImage.src = `assets/${enemyImages[Math.floor(Math.random() * enemyImages.length)]}`;
 };
 
 generateEnemy.onclick = showRandomEnemy; 
 
 
 
-
-
 // Seksjon 3: Sloss!
 //Du skal vise frem helten og fienden. Se HTML-dokumentet for hvordan fremvisningen skal se ut, med tanke på hvilke tagger, hierarki og hvilke klasser de skal ha.
 //Du skal lage den strukturen som vist i HTML, her i Javascript og legge de til i div'en "battle-arena" fra HTML.
+
+/* Slik skal fremvisning av helten se ut. Du skal lage disse taggene og denne strukturen i Javascript. 
+<div id="character-display" class="profile-card">
+  <h2>Helten</h2>
+  <img id="char-img" alt="Profilbilde" />
+  <p id="char-name"></p>
+  <p id="char-hp"></p>
+  <p id="char-attack"></p>
+</div>
+*/
+
+const battleArea = document.getElementById("battle-area");
+
+// Create elementer og lage strukturen
+const profileCard = document.createElement("div");
+battleArea.append(profileCard);
+
+const charTitle = document.createElement("h2");
+const charImage = document.createElement("img");
+const charName = document.createElement("p");
+const charHp = document.createElement("p");
+const charAttackDamage = document.createElement("p");
+
+profileCard.append(charTitle, charImage, charName, charHp, charAttackDamage);
+
+//Legge til id'er og klasser og innerhtml
+profileCard.id = 'character-display';
+profileCard.classList.add("profile-card");
+
+charTitle.innerHTML = "Helten"; 
+
+charImage.id = "char-img";
+charImage.alt = "Profilbilde";
+
+charName.id = "char-name";
+
+charHp.id = "char-hp";
+
+charAttackDamage.id = "char-attack";
+
+
+console.log(profileCard);
+
+
+
+
+
+/*
+<!-- Slik skal fremvisning av fienden se ut. Du skal lage disse taggene og denne strukturen i Javascript.
+<div id="enemy-fight-display" class="profile-card">
+  <h2>Fiende</h2>
+  <img id="enemy-fight-img" alt="Fiendens profilbilde" />
+  <p id="enemy-fight-name"></p>
+  <p id="enemy-fight-hp"></p>
+  <p id="enemy-fight-attack"></p>
+</div>
+*/
+
