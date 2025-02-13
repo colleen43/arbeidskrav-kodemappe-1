@@ -127,3 +127,31 @@ console.log(profileCard);
 </div>
 */
 
+const enemyprofileCard = document.createElement("div");
+battleArea.append(enemyprofileCard);
+
+const enemyTitle = document.createElement("h2");
+const enemyFightImage = document.createElement("img");
+const enemyFightName = document.createElement("p");
+const enemyFightHp = document.createElement("p");
+const enemyFightAttack = document.createElement("p");
+
+enemyprofileCard.append(enemyTitle, enemyFightImage, enemyFightName, enemyFightHp, enemyFightAttack);
+
+//Legge til id'er og klasser og innerhtml
+enemyprofileCard.id = 'enemy-fight-display';
+enemyprofileCard.classList.add("profile-card");
+
+enemyTitle.innerHTML = "Fiende"; 
+
+enemyFightImage.id = "enemy-fight-img";
+enemyFightImage.alt = "Fiendens profilbilde";
+
+enemyFightName.id = "enemy-fight-name";
+
+enemyFightHp.id = "enemy-fight-hp";
+
+enemyFightAttack.id = "enemy-fight-attack";
+
+
+console.log(enemyprofileCard); 
