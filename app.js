@@ -21,18 +21,20 @@ for(let i = 0; i < profileImages.length; i++){
 // Lagre valgt bilde i local storage
 
 function addProfilePicture(){
-    localStorage.setItem("profile picture", selectedPicture);
+    localStorage.setItem("profilepicture", selectedPicture);
 }
 
 
 function addCharacterValues() {
     const characterNameValue = {
         navn: characterName.value,
-        hp: characterHp.value,
-        attackDamageInfo: attackDamage.value,
+        hp: Number(characterHp.value),
+        attackDamageInfo: Number(attackDamage.value),
     };
+
+    console.log(characterNameValue);
     
-    localStorage.setItem("character name", JSON.stringify(characterNameValue));
+    localStorage.setItem("charactername", JSON.stringify(characterNameValue));
 }
 
 createCharacter.addEventListener("click", addCharacterValues);
@@ -51,18 +53,30 @@ const enemyImage = document.getElementById("enemy-img");
 const enemyNames = ["Goblin", "Ork", "Drage"];
 const enemyImages = ["dragon.jpg", "monster.jpg", "swamp-monster.jpg"];
 
-
+const enemyNameValue = enemyNames[Math.floor(Math.random() * enemyNames.length)];
+const enemyImageValue = enemyImages[Math.floor(Math.random() * enemyImages.length)];
 const randomNumberHp = Math.floor((Math.random() * 150) + 50);
 const randomNumberEnemyAttack = Math.floor((Math.random() * 40) + 10);
 
-function showRandomEnemy(){
-enemyName.innerHTML = `Enemy: ${enemyNames[Math.floor(Math.random() * enemyNames.length)]}`;
-enemyHp.innerHTML = `HP: ${randomNumberHp}`;
-enemyAttack.innerHTML = `Enemy attack: ${randomNumberEnemyAttack}`;
-enemyImage.src = `assets/${enemyImages[Math.floor(Math.random() * enemyImages.length)]}`;
+const enemyData = {
+    enemy: enemyNameValue,
+    image: enemyImageValue,
+    hp: randomNumberHp,
+    attack: randomNumberEnemyAttack,
 };
 
-generateEnemy.onclick = showRandomEnemy; 
+
+function showRandomEnemy(){
+enemyName.innerHTML = `Enemy: ${enemyNameValue}`;
+enemyImage.src = `assets/${enemyImageValue}`;
+enemyHp.innerHTML = `HP: ${randomNumberHp}`;
+enemyAttack.innerHTML = `Enemy attack: ${randomNumberEnemyAttack}`;
+localStorage.setItem("randomenemycard", JSON.stringify(enemyData));
+};
+
+
+generateEnemy.addEventListener("click", showRandomEnemy);
+
 
 
 
@@ -81,6 +95,8 @@ generateEnemy.onclick = showRandomEnemy;
 */
 
 const battleArea = document.getElementById("battle-area");
+const startFight = document.getElementById("start-fight");
+const battleFight = document.getElementById("battle-result");
 
 // Create elementer og lage strukturen
 const profileCard = document.createElement("div");
@@ -103,17 +119,37 @@ charTitle.innerHTML = "Helten";
 charImage.id = "char-img";
 charImage.alt = "Profilbilde";
 
+
 charName.id = "char-name";
 
 charHp.id = "char-hp";
 
 charAttackDamage.id = "char-attack";
 
+//Retrieve from local storage
+//localStorage.setItem("profilepicture", selectedPicture);
 
-console.log(profileCard);
+let hentetSelectedPicture = localStorage.getItem("profilepicture");
+//console.log(hentetSelectedPicture);
+
+//localStorage.setItem("charactername", JSON.stringify(characterNameValue));
+
+let hentetCharacterNameValue = localStorage.getItem("charactername");
+hentetCharacterNameValue = JSON.parse(hentetCharacterNameValue);
+//console.log(hentetcharacterNameValue);
+
+//localStorage.setItem("randomenemycard", JSON.stringify(enemyData));
 
 
+function clickStartFight(){
+    charImage.src = hentetSelectedPicture;
+    charName.textContent = `Navn: ${hentetCharacterNameValue.navn}`;
+    charHp.textContent = `HP: ${hentetCharacterNameValue.hp}`;
+    charAttackDamage.textContent = `Attack Damage: ${hentetCharacterNameValue.attackDamageInfo}`;
 
+}
+
+startFight.onclick = clickStartFight;
 
 
 /*
@@ -154,4 +190,9 @@ enemyFightHp.id = "enemy-fight-hp";
 enemyFightAttack.id = "enemy-fight-attack";
 
 
-console.log(enemyprofileCard); 
+//Simuler en kamp
+
+let hentetEnemyData = localStorage.getItem("randomenemycard");
+hentetEnemyData = JSON.parse(hentetEnemyData);
+console.log(hentetEnemyData);
+
