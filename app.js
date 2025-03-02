@@ -28,10 +28,6 @@ function addCharacterValues() {
     localStorage.setItem("charactername", JSON.stringify(characterValues));
 }
 
-createCharacter.addEventListener("click", addCharacterValues);
-
-
-
 
 //Seksjon 2: Generer fiende
 const generateEnemy = document.getElementById("generate-enemy");
@@ -74,32 +70,19 @@ function showRandomEnemy(){
 };
 
 
-generateEnemy.addEventListener("click", showRandomEnemy);
-
-
-
 
 // Seksjon 3: Sloss!
 //Du skal vise frem helten og fienden. Se HTML-dokumentet for hvordan fremvisningen skal se ut, med tanke på hvilke tagger, hierarki og hvilke klasser de skal ha.
 //Du skal lage den strukturen som vist i HTML, her i Javascript og legge de til i div'en "battle-arena" fra HTML.
 
-/* Slik skal fremvisning av helten se ut. Du skal lage disse taggene og denne strukturen i Javascript. 
-<div id="character-display" class="profile-card">
-  <h2>Helten</h2>
-  <img id="char-img" alt="Profilbilde" />
-  <p id="char-name"></p>
-  <p id="char-hp"></p>
-  <p id="char-attack"></p>
-</div>
-*/
-
-const battleArea = document.getElementById("battle-area");
 const startFight = document.getElementById("start-fight");
-const battleFight = document.getElementById("battle-result");
+const battleArea = document.getElementById("battle-area");
 
 // Create elementer og lage strukturen
 const profileCard = document.createElement("div");
+
 battleArea.append(profileCard);
+
 
 const charTitle = document.createElement("h2");
 const charImage = document.createElement("img");
@@ -125,27 +108,14 @@ charHp.id = "char-hp";
 
 charAttackDamage.id = "char-attack";
 
-
-
-/*
-<!-- Slik skal fremvisning av fienden se ut. Du skal lage disse taggene og denne strukturen i Javascript.
-<div id="enemy-fight-display" class="profile-card">
-  <h2>Fiende</h2>
-  <img id="enemy-fight-img" alt="Fiendens profilbilde" />
-  <p id="enemy-fight-name"></p>
-  <p id="enemy-fight-hp"></p>
-  <p id="enemy-fight-attack"></p>
-</div>
-*/
-
 const enemyprofileCard = document.createElement("div");
-battleArea.append(enemyprofileCard);
-
 const enemyTitle = document.createElement("h2");
 const enemyFightImage = document.createElement("img");
 const enemyFightName = document.createElement("p");
 const enemyFightHp = document.createElement("p");
 const enemyFightAttack = document.createElement("p");
+
+battleArea.append(enemyprofileCard);
 
 enemyprofileCard.append(enemyTitle, enemyFightImage, enemyFightName, enemyFightHp, enemyFightAttack);
 
@@ -167,17 +137,17 @@ enemyFightAttack.id = "enemy-fight-attack";
 
 //Simuler en kamp
 
-function clickStartFight(){
+function getStoredData(){
     let hentetSelectedPicture = localStorage.getItem("profilepicture");
+    let hentetCharacterValues = JSON.parse(localStorage.getItem("charactername"));
+    let hentetEnemyData = JSON.parse(localStorage.getItem("randomenemycard"));
 
-//localStorage.setItem("charactername", JSON.stringify(characterValues));
-let hentetCharacterValues = localStorage.getItem("charactername");
-hentetCharacterValues = JSON.parse(hentetCharacterValues);
+    return { hentetSelectedPicture: hentetSelectedPicture, 
+        hentetCharacterValues: hentetCharacterValues, 
+        hentetEnemyData: hentetEnemyData  };
+}
 
-//localStorage.setItem("randomenemycard", JSON.stringify(enemyData));
-let hentetEnemyData = localStorage.getItem("randomenemycard");
-hentetEnemyData = JSON.parse(hentetEnemyData);
-    
+function oppdaterHTML(hentetSelectedPicture, hentetCharacterValues, hentetEnemyData){
     charImage.src = "";
     charName.textContent = "";
     charHp.textContent = "";
@@ -197,24 +167,42 @@ hentetEnemyData = JSON.parse(hentetEnemyData);
     enemyFightHp.textContent = `HP: ${hentetEnemyData.hp}`;
     enemyFightAttack.textContent =  `Attack Damage: ${hentetEnemyData.attack}`;
 
+} 
 
-    if( hentetCharacterValues.hp > hentetEnemyData.hp){
-        battleFight.innerHTML = "Du vant!";
-    
-    } else if (hentetEnemyData.hp > hentetCharacterValues.hp){
-        battleFight.innerHTML = "Du tapte!";
-    } else if (hentetEnemyData.hp === hentetCharacterValues.hp){
-        battleFight.innerHTML = "Uavgjort!";
-    }
-
-    //For testing
-    
+function checkFightResult(characterHp, enemyHp){
+    const battleFight = document.getElementById("battle-result");
+    if(characterHp > enemyHp){
+    battleFight.innerHTML = "Du vant!";
+} else if (enemyHp > characterHp){
+    battleFight.innerHTML = "Du tapte!";
+} else if (enemyHp === characterHp){
+    battleFight.innerHTML = "Uavgjort!";
+}
 }
 
-startFight.onclick = clickStartFight;
+function clickStartFight(){
+   const { hentetSelectedPicture, hentetCharacterValues, hentetEnemyData} = getStoredData();
+   oppdaterHTML(hentetSelectedPicture, hentetCharacterValues, hentetEnemyData);
+   checkFightResult(hentetCharacterValues.hp, hentetEnemyData.hp); 
+}
+   
+
+window.onload = () => {
+    createCharacter.addEventListener("click", addCharacterValues);
+    generateEnemy.addEventListener("click", showRandomEnemy);
+    startFight.onclick = clickStartFight; 
+
+}
 
 
-//module.exports = { clickStartFight };
+
+//For testing
+    
+module.exports = { checkFightResult };
+
+/*module.exports = {
+    transformIgnorePatterns: ["/node_modules/(?!(your-dependency)/)"]
+  }; */
 
 
 
