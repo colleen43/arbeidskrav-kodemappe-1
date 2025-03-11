@@ -69,23 +69,25 @@ function showRandomEnemy(){
     
 };
 
+const startFight = document.getElementById("start-fight");
+const battleArea = document.getElementById("battle-area");
 
 
 // Seksjon 3: Sloss!
 //Du skal vise frem helten og fienden. Se HTML-dokumentet for hvordan fremvisningen skal se ut, med tanke på hvilke tagger, hierarki og hvilke klasser de skal ha.
 //Du skal lage den strukturen som vist i HTML, her i Javascript og legge de til i div'en "battle-arena" fra HTML.
 
-const startFight = document.getElementById("start-fight");
-const battleArea = document.getElementById("battle-area");
-
 // Create elementer og lage strukturen
 const profileCard = document.createElement("div");
 
+function appendProfileCard(){
 battleArea.append(profileCard);
+}
 
 
 const charTitle = document.createElement("h2");
 const charImage = document.createElement("img");
+charImage.style.display = "none"; //So the battle area looks cleaner before fight
 const charName = document.createElement("p");
 const charHp = document.createElement("p");
 const charAttackDamage = document.createElement("p");
@@ -111,11 +113,15 @@ charAttackDamage.id = "char-attack";
 const enemyprofileCard = document.createElement("div");
 const enemyTitle = document.createElement("h2");
 const enemyFightImage = document.createElement("img");
+enemyFightImage.style.display = "none"; //So the battle area looks cleaner before fight
 const enemyFightName = document.createElement("p");
 const enemyFightHp = document.createElement("p");
 const enemyFightAttack = document.createElement("p");
 
+function appendenemyProfileCard(){
 battleArea.append(enemyprofileCard);
+}
+
 
 enemyprofileCard.append(enemyTitle, enemyFightImage, enemyFightName, enemyFightHp, enemyFightAttack);
 
@@ -148,15 +154,14 @@ function getStoredData(){
 }
 
 function oppdaterHTML(hentetSelectedPicture, hentetCharacterValues, hentetEnemyData){
-    charImage.src = "";
+    charImage.style.display = "block";
     charName.textContent = "";
     charHp.textContent = "";
     charAttackDamage.textContent = "";
-    enemyFightImage.src = "";
+    enemyFightImage.style.display = "block";
     enemyFightName.textContent = "";
     enemyFightHp.textContent = "";
     enemyFightAttack.textContent = "";
-    battleFight.innerHTML = "";
     
     charImage.src = hentetSelectedPicture;
     charName.textContent = `Navn: ${hentetCharacterValues.navn}`;
@@ -171,6 +176,7 @@ function oppdaterHTML(hentetSelectedPicture, hentetCharacterValues, hentetEnemyD
 
 function checkFightResult(characterHp, enemyHp){
     const battleFight = document.getElementById("battle-result");
+    battleFight.innerHTML = "";
     if(characterHp > enemyHp){
     battleFight.innerHTML = "Du vant!";
 } else if (enemyHp > characterHp){
@@ -182,12 +188,14 @@ function checkFightResult(characterHp, enemyHp){
 
 function clickStartFight(){
    const { hentetSelectedPicture, hentetCharacterValues, hentetEnemyData} = getStoredData();
-   oppdaterHTML(hentetSelectedPicture, hentetCharacterValues, hentetEnemyData);
+   oppdaterHTML(hentetSelectedPicture, hentetCharacterValues, hentetEnemyData, charImage);
    checkFightResult(hentetCharacterValues.hp, hentetEnemyData.hp); 
 }
    
 
 window.onload = () => {
+    appendProfileCard();
+    appendenemyProfileCard();
     createCharacter.addEventListener("click", addCharacterValues);
     generateEnemy.addEventListener("click", showRandomEnemy);
     startFight.onclick = clickStartFight; 
