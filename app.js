@@ -15,17 +15,22 @@ for(let i = 0; i < profileImages.length; i++){
         selectedPicture = profileImages[i].src
     }};
 
-
-function addCharacterValues() {
+    
+function addCharacterValues() { 
 
     const characterValues = {
         navn: characterName.value,
         hp: Number(characterHp.value),
         attackDamageInfo: Number(attackDamage.value),
     };
-    
+
+
+    //console.log(characterValues);
+
     localStorage.setItem("profilepicture", selectedPicture);
     localStorage.setItem("charactername", JSON.stringify(characterValues));
+
+    //return characterValues;
 }
 
 
@@ -188,7 +193,7 @@ function checkFightResult(characterHp, enemyHp){
 
 function clickStartFight(){
    const { hentetSelectedPicture, hentetCharacterValues, hentetEnemyData} = getStoredData();
-   oppdaterHTML(hentetSelectedPicture, hentetCharacterValues, hentetEnemyData, charImage);
+   oppdaterHTML(hentetSelectedPicture, hentetCharacterValues, hentetEnemyData);
    checkFightResult(hentetCharacterValues.hp, hentetEnemyData.hp); 
 }
    
@@ -203,14 +208,9 @@ window.onload = () => {
 }
 
 
-
 //For testing
     
 module.exports = { checkFightResult };
-
-/*module.exports = {
-    transformIgnorePatterns: ["/node_modules/(?!(your-dependency)/)"]
-  }; */
 
 
 

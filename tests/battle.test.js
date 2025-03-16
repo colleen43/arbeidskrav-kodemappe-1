@@ -15,6 +15,7 @@ beforeEach(() => {
 
 }); 
 
+
 test("Funksjonen skal skrive ut 'Du vant' hvis character hp er høyre enn fiende hp", () => {
   
   checkFightResult(80, 75);
@@ -39,14 +40,31 @@ test("Funksjonen skal skrive ut 'Uavgjort' hvis character hp er det samme som fi
 
 });
 
-}); 
+});
 
 
+describe("Add Character Values", () => {
+  beforeEach(() => {
+    document.body.innerHTML = `
+    <input type="text" id="character-name" value="Marta"/>
+    <input type="number" id="character-hp" value=250 />
+    <input type="number" id="attack-damage" value=437 />
+`;
 
-/*const { showRandomEnemy } = require("../app");
+});
 
-test("Funksjonen skal skrive ut tilfeldig navn, bilde, hp og attack", () => {
-   showRandomEnemy( {enemyNameValue: "Goblin", enemyImageValue: "dragon.jpg", 
-    randomNumberHp: 100, randomNumberEnemyAttack: 30 })
-   expect().toBe()
-}); */
+test("Character navn, hp, og attack damage som skrives i input feltene, skal generere riktig verdier", () => {
+const characterName = document.getElementById("character-name");
+expect(characterName.value).toBe("Marta");
+
+const characterHp = Number(document.getElementById("character-hp").value);
+expect(characterHp).toBe(250);
+
+const attackDamage = Number(document.getElementById("attack-damage").value);
+expect(attackDamage).toBe(437);
+
+});
+  
+});
+
+
